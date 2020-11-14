@@ -7,6 +7,8 @@ target 'TestAPI_SwiftUI' do
 
   # Pods for TestAPI_SwiftUI
 
+  pod 'Alamofire', '5.4.0'
+  
   target 'TestAPI_SwiftUITests' do
     inherit! :search_paths
     # Pods for testing
