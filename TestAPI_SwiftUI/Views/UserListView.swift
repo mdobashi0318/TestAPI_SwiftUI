@@ -13,6 +13,7 @@ struct UserListView: View {
     
     @State var isInputView: Bool = false
     
+    @State var imageStr = ""
     
     var addButton: some View {
         Button(action: {
@@ -21,7 +22,7 @@ struct UserListView: View {
             Image(systemName: "plus")
         })
         .sheet(isPresented: $isInputView, content: {
-            InputUserView(name: .constant(""), text: .constant(""), imageStr: .constant(""))
+            InputUserView(name: .constant(""), text: .constant(""), imageStr: $imageStr)
         })
     }
     

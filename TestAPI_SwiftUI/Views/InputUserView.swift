@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Photos
 
 struct InputUserView: View {
     
@@ -16,6 +17,7 @@ struct InputUserView: View {
     
     @Binding var imageStr: String
     
+    @State var isImagePicker = false
     
     var body: some View {
         NavigationView {
@@ -30,12 +32,27 @@ struct InputUserView: View {
                 
                 Section(header: Text("画像"), content: {
                     Button(action: {
-                        // TODO: imagePickerを表示する
-                        print("imagePickerを表示する")
+                        switch PHPhotoLibrary.authorizationStatus() {
+                        case .authorized:
+                            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                                isImagePicker.toggle()
+                            }
+                            
+                        default:
+                            PHPhotoLibrary.requestAuthorization { result in
+                                if result == .authorized {
+                                    isImagePicker.toggle()
+                                }
+                            }
+                            
+                        }
+                        
                     }, label: {
-                        Image.setImage(imageStr: self.$imageStr.wrappedValue)
+                        Image.setImage(imageStr: self.imageStr)
                             .resizable()
                             .frame(width: 50, height: 50)
+                    }).sheet(isPresented: $isImagePicker, content: {
+                        ImagePicker(sourceType: .photoLibrary, imageStr: self.$imageStr)
                     })
                     
                 })
