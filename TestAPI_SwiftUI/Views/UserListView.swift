@@ -11,9 +11,25 @@ struct UserListView: View {
     
     @ObservedObject var viewModel = UserViewModel()
     
+    @State var isInputView: Bool = false
+    
+    
+    var addButton: some View {
+        Button(action: {
+            isInputView.toggle()
+        }, label: {
+            Image(systemName: "plus")
+        })
+        .sheet(isPresented: $isInputView, content: {
+            InputUserView(name: .constant(""), text: .constant(""), imageStr: .constant(""))
+        })
+    }
+    
     var body: some View {
         NavigationView {
             UserList(model: .constant(self.viewModel.model))
+                .listStyle(PlainListStyle())
+                .navigationBarItems(trailing: addButton)
         }
     }
 }
