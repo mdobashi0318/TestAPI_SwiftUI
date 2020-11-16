@@ -35,4 +35,27 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    
+    func postUser(name: String, text: String, imageStr: String, success: @escaping()->(), failure: @escaping(String?)->()) {
+        
+        if name == "" {
+            failure("名前が入力されていません")
+            return
+        }
+        
+        if text == "" {
+            failure("テキストが入力されていません")
+            return
+        }
+        
+        
+        UsersModel.postRequest(name: name, text: text, image: imageStr) { error in
+            if error != nil {
+                failure("エラーが発生しました")
+                return
+            }
+            success()
+        }
+    }
+    
 }

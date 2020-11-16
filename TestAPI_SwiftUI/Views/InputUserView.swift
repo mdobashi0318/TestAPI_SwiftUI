@@ -10,6 +10,7 @@ import Photos
 
 struct InputUserView: View {
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var name: String = ""
     
@@ -18,6 +19,28 @@ struct InputUserView: View {
     @State var imageStr: String = ""
     
     @State var isImagePicker = false
+    
+    @State var isAlert = false
+    
+    
+    var addButton: some View {
+        Button(action: {
+            UserViewModel().postUser(name: name, text: text, imageStr: imageStr, success: {
+                isAlert.toggle()
+            }, failure: { error in
+                print(error!)
+            })
+            
+        }, label: {
+            Image(systemName: "plus")
+        })
+        .alert(isPresented: $isAlert) {
+            Alert(title: Text("登録しました"), dismissButton: .default(Text("閉じる")) {
+                self.presentationMode.wrappedValue.dismiss()
+            })
+        }
+        
+    }
     
     var body: some View {
         NavigationView {
@@ -56,7 +79,7 @@ struct InputUserView: View {
                     })
                     
                 })
-                
+                .navigationBarItems(trailing: addButton)
             }
         }
     }
