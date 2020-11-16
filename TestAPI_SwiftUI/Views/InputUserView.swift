@@ -11,11 +11,11 @@ import Photos
 struct InputUserView: View {
     
     
-    @Binding var name: String
+    @State var name: String = ""
     
-    @Binding var text: String
+    @State var text: String = ""
     
-    @Binding var imageStr: String
+    @State var imageStr: String = ""
     
     @State var isImagePicker = false
     
@@ -64,6 +64,6 @@ struct InputUserView: View {
 
 struct InputUserView_Previews: PreviewProvider {
     static var previews: some View {
-        InputUserView(name: .constant(testUser[0].name ?? ""), text: .constant(testUser[0].text ?? ""), imageStr: .constant(testUser[0].image ?? ""))
+        InputUserView()
     }
 }
