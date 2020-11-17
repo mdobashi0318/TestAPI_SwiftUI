@@ -24,11 +24,24 @@ struct UserListView: View {
         })
     }
     
+    
+    var reloadButton: some View {
+        Button(action: {
+            self.viewModel.fetchAllUser(success: {
+                
+            }, failure: { _ in
+                
+            })
+        }, label: {
+            Image(systemName: "arrow.clockwise")
+        })
+    }
+    
     var body: some View {
         NavigationView {
             UserList(model: .constant(self.viewModel.model))
                 .listStyle(PlainListStyle())
-                .navigationBarItems(trailing: addButton)
+                .navigationBarItems(leading: reloadButton, trailing: addButton)
         }
     }
 }

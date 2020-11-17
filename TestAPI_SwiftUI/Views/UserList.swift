@@ -9,15 +9,15 @@ import SwiftUI
 
 struct UserList: View {
     
-    @Binding var model: [UsersModel]?
+    @Binding var model: [UsersModel]
     
     var body: some View {
         List {
-            if self.model == nil || self.model?.count == 0 {
+            if self.model.count == 0 {
                 Text("ユーザが見つかりませんでした")
             } else {
-                ForEach(0..<self.model!.count, id: \.self) { row in
-                    UserRow(user: .constant(self.model![row]))
+                ForEach(0..<self.model.count, id: \.self) { row in
+                    UserRow(user: self.$model[row])
                 }
             }
         }

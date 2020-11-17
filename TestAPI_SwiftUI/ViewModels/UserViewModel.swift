@@ -27,6 +27,7 @@ class UserViewModel: ObservableObject {
             if let _error = error {
                 print("Error: \(_error)")
                 failure("エラーが発生しました")
+                self.model = []
                 return
             }
             
