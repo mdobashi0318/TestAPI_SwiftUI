@@ -217,8 +217,8 @@
 				D0D8C6BE255FCB5400690C9B /* UserListView.swift */,
 				D01417AE2560EEED0067C316 /* UserList.swift */,
 				D0ED622E2560D4510001EBFB /* UserRow.swift */,
-				D01417C8256135640067C316 /* ImagePicker.swift */,
 				D01417C3256104F70067C316 /* InputUserView.swift */,
+				D01417C8256135640067C316 /* ImagePicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

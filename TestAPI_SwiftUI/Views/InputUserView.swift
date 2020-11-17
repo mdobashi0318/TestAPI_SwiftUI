@@ -23,6 +23,24 @@ struct InputUserView: View {
     @State var isAlert = false
     
     
+    var body: some View {
+        NavigationView {
+            List {
+                nameSection
+                textSection
+                imageSection
+                    .navigationBarItems(trailing: addButton)
+            }
+        }
+    }
+}
+
+
+
+// MARK: - UI作成
+
+extension InputUserView {
+    
     var addButton: some View {
         Button(action: {
             UserViewModel().postUser(name: name, text: text, imageStr: imageStr, success: {
@@ -42,48 +60,54 @@ struct InputUserView: View {
         
     }
     
-    var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("名前"), content: {
-                    TextField("名前を入力してください", text: self.$name)
-                })
-                
-                Section(header: Text("テキスト"), content: {
-                    TextField("テキストを入力してください", text: self.$text)
-                })
-                
-                Section(header: Text("画像"), content: {
-                    Button(action: {
-                        switch PHPhotoLibrary.authorizationStatus() {
-                        case .authorized:
-                            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                                isImagePicker.toggle()
-                            }
-                            
-                        default:
-                            PHPhotoLibrary.requestAuthorization { result in
-                                if result == .authorized {
-                                    isImagePicker.toggle()
-                                }
-                            }
-                            
-                        }
-                        
-                    }, label: {
-                        Image.setImage(imageStr: self.imageStr)
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                    }).sheet(isPresented: $isImagePicker, content: {
-                        ImagePicker(sourceType: .photoLibrary, imageStr: self.$imageStr)
-                    })
-                    
-                })
-                .navigationBarItems(trailing: addButton)
-            }
-        }
+    
+    var nameSection: some View {
+        Section(header: Text("名前"), content: {
+            TextField("名前を入力してください", text: self.$name)
+        })
     }
+    
+    
+    var textSection: some View {
+        Section(header: Text("テキスト"), content: {
+            TextField("テキストを入力してください", text: self.$text)
+        })
+    }
+    
+    
+    var imageSection: some View {
+        Section(header: Text("画像"), content: {
+            Button(action: {
+                switch PHPhotoLibrary.authorizationStatus() {
+                case .authorized:
+                    if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                        isImagePicker.toggle()
+                    }
+                    
+                default:
+                    PHPhotoLibrary.requestAuthorization { status in
+                        if status == .authorized {
+                            isImagePicker.toggle()
+                        }
+                    }
+                    
+                }
+                
+            }, label: {
+                Image.setImage(imageStr: self.imageStr)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+            }).sheet(isPresented: $isImagePicker, content: {
+                ImagePicker(sourceType: .photoLibrary, imageStr: self.$imageStr)
+            })
+            
+        })
+    }
+    
 }
+
+
+
 
 struct InputUserView_Previews: PreviewProvider {
     static var previews: some View {
