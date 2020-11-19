@@ -17,7 +17,10 @@ struct UserList: View {
                 Text("ユーザが見つかりませんでした")
             } else {
                 ForEach(0..<self.model.count, id: \.self) { row in
-                    UserRow(user: self.$model[row])
+                    NavigationLink(destination: DetailsUserView(model: self.$model[row])) {
+                        UserRow(user: self.$model[row])
+                    }
+
                 }
             }
         }
