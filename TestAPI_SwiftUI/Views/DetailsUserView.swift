@@ -12,13 +12,11 @@ struct DetailsUserView: View {
     @Binding var model: UsersModel
     
     var body: some View {
-        NavigationView {
-            List {
-                textSection
-                imageSection
-                    .navigationTitle(model.name ?? "")
-                    .navigationBarItems(trailing: addButton)
-            }
+        List {
+            textSection
+            imageSection
+                .navigationTitle(model.name ?? "")
+                .navigationBarItems(trailing: addButton)
         }
     }
 }
@@ -63,6 +61,8 @@ extension DetailsUserView {
 
 struct DetailsUserView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsUserView(model: .constant(testUser[0]))
+        NavigationView {
+            DetailsUserView(model: .constant(testUser[0]))
+        }
     }
 }
