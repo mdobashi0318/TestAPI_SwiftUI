@@ -51,7 +51,6 @@ extension DetailsUserView {
                     .resizable()
                     .frame(width: 50, height: 50)
             })
-            .frame(width: 50, height: 50)
         })
     }
     
