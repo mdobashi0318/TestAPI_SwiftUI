@@ -11,6 +11,8 @@ struct DetailsUserView: View {
     
     @Binding var model: UsersModel
     
+    @State var isInputView: Bool = false
+    
     var body: some View {
         List {
             textSection
@@ -28,10 +30,18 @@ extension DetailsUserView {
     
     var addButton: some View {
         Button(action: {
-            print("編集画面")
+            self.isInputView.toggle()
         }, label: {
             Image(systemName: "plus")
         })
+        .sheet(isPresented: $isInputView) {
+            InputUserView(id: self.model.id,
+                          name: self.model.name ?? "",
+                          text: self.model.text ?? "",
+                          imageStr: self.model.image ?? "",
+                          isUpdate: true
+            )
+        }
     }
     
     

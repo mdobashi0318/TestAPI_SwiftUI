@@ -12,6 +12,8 @@ struct InputUserView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    @State var id: Int?
+    
     @State var name: String = ""
     
     @State var text: String = ""
@@ -22,6 +24,8 @@ struct InputUserView: View {
     
     @State var isAlert = false
     
+    @State var isUpdate = false
+    
     
     var body: some View {
         NavigationView {
@@ -30,6 +34,7 @@ struct InputUserView: View {
                 textSection
                 imageSection
                     .navigationBarItems(trailing: addButton)
+                    .navigationTitle(isUpdate ? "更新" : "登録")
             }
         }
     }
@@ -40,20 +45,15 @@ struct InputUserView: View {
 // MARK: - UI作成
 
 extension InputUserView {
-    
+
     var addButton: some View {
         Button(action: {
-            UserViewModel().postUser(name: name, text: text, imageStr: imageStr, success: {
-                isAlert.toggle()
-            }, failure: { error in
-                print(error!)
-            })
-            
+            userModelAction()
         }, label: {
             Image(systemName: "plus")
         })
         .alert(isPresented: $isAlert) {
-            Alert(title: Text("登録しました"), dismissButton: .default(Text("閉じる")) {
+            Alert(title: Text(isUpdate ? "更新しました" : "登録しました"), dismissButton: .default(Text("閉じる")) {
                 self.presentationMode.wrappedValue.dismiss()
             })
         }
@@ -106,6 +106,40 @@ extension InputUserView {
     
 }
 
+
+
+
+// MARK: - func
+
+extension InputUserView {
+    
+    private func userModelAction() {
+        if !isUpdate {
+            UserViewModel().postUser(name: name, text: text, imageStr: imageStr, success: {
+                isAlert.toggle()
+            }, failure: { error in
+                print(error!)
+            })
+        } else {
+            guard let id = self.id else {
+                print("idの取得失敗")
+                return
+            }
+            UserViewModel().updateUser(id: id,
+                                       name: name,
+                                       text: text,
+                                       imageStr: imageStr,
+                                       success: {
+                                        isAlert.toggle()
+                                       },
+                                       failure: { error in
+                                        print(error!)
+                                       }
+            )
+        }
+    }
+    
+}
 
 
 
