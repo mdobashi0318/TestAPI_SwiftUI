@@ -13,26 +13,20 @@ class UserViewModel: ObservableObject {
     @Published var model: [UsersModel] = []
     
     init() {
-        fetchAllUser(success: {
-            
-        }, failure: { _ in
-            
-        })
+        fetchAllUser()
     }
    
-    func fetchAllUser(success: @escaping()->(), failure: @escaping(String?)->()) {
+    func fetchAllUser() {
         
         UsersModel.fetchUsers() { result, error in
             
             if let _error = error {
                 print("Error: \(_error)")
-                failure("エラーが発生しました")
                 self.model = []
                 return
             }
             
             self.model = result
-            success()
         }
     }
     

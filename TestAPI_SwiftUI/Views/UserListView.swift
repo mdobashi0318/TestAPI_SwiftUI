@@ -27,11 +27,7 @@ struct UserListView: View {
     
     var reloadButton: some View {
         Button(action: {
-            self.viewModel.fetchAllUser(success: {
-                
-            }, failure: { _ in
-                
-            })
+            self.viewModel.fetchAllUser()
         }, label: {
             Image(systemName: "arrow.clockwise")
         })
