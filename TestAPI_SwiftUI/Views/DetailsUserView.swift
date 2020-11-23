@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailsUserView: View {
     
-    @Binding var model: UsersModel
+    @State var model: UsersModel
     
     @State var isInputView: Bool = false
     
@@ -41,6 +41,11 @@ extension DetailsUserView {
                           imageStr: self.model.image ?? "",
                           isUpdate: true
             )
+            .onDisappear {
+                UserViewModel().fetchUser(id: model.id, success: { user in
+                    self.model = user
+                })
+            }
         }
     }
     
@@ -55,6 +60,7 @@ extension DetailsUserView {
     var imageSection: some View {
         Section(header: Text("画像"), content: {
             Button(action: {
+                // TODO: 今後追加予定
                 print("画像の拡大表示")
             }, label: {
                 Image.setImage(imageStr: model.image)
@@ -71,7 +77,7 @@ extension DetailsUserView {
 struct DetailsUserView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DetailsUserView(model: .constant(testUser[0]))
+            DetailsUserView(model: testUser[0])
         }
     }
 }

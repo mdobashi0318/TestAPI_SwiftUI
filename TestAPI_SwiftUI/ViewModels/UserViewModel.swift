@@ -31,6 +31,24 @@ class UserViewModel: ObservableObject {
     }
     
     
+    func fetchUser(id: Int?, success: @escaping(UsersModel)->()) {
+        
+        guard let _id = id else {
+            return
+        }
+        UsersModel.fetchUsers() { result, error in
+            
+            if let _error = error {
+                print("Error: \(_error)")
+                self.model = []
+                return
+            }
+            
+            success(result.filter { $0.id == _id }.first!)
+        }
+    }
+    
+    
     func postUser(name: String, text: String, imageStr: String, success: @escaping()->(), failure: @escaping(String?)->()) {
         
         if name == "" {

@@ -21,6 +21,9 @@ struct UserListView: View {
         })
         .sheet(isPresented: $isInputView, content: {
             InputUserView()
+                .onDisappear {
+                    viewModel.fetchAllUser()
+                }
         })
     }
     
@@ -35,9 +38,12 @@ struct UserListView: View {
     
     var body: some View {
         NavigationView {
-            UserList(model: .constant(self.viewModel.model))
+            UserList(model: self.$viewModel.model)
                 .listStyle(PlainListStyle())
                 .navigationBarItems(leading: reloadButton, trailing: addButton)
+                .onAppear {
+                    viewModel.fetchAllUser()
+                }
         }
     }
 }
